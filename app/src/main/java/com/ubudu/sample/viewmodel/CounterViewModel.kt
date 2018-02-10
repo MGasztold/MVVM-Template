@@ -3,7 +3,7 @@ package com.ubudu.sample.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 
-import com.ubudu.sample.model.Counter
+import com.ubudu.sample.model.CounterLiveDataProvider
 
 /**
  * Created by Aga on 02.02.2018.
@@ -14,24 +14,24 @@ class CounterViewModel(counterMaxValue: Int) : ViewModel() {
 
     val counterLiveData: LiveData<Int>
 
-    private val counter: Counter = Counter(counterMaxValue)
+    private val counterLiveDataProvider: CounterLiveDataProvider = CounterLiveDataProvider(counterMaxValue)
 
     init {
-        counterLiveData = counter.liveData
+        counterLiveData = counterLiveDataProvider.liveData
     }
 
     /**
      *
      */
     fun start() {
-        counter.start()
+        counterLiveDataProvider.start()
     }
 
     /**
      *
      */
     fun reset() {
-        counter.stop()
-        counter.start()
+        counterLiveDataProvider.stop()
+        counterLiveDataProvider.start()
     }
 }

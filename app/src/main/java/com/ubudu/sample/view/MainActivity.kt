@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // init counter view model
-        counterViewModel = ViewModelProviders.of(this, CounterViewModelFactory(10000))
+        counterViewModel = ViewModelProviders.of(this, CounterViewModelFactory(10))
                 .get(CounterViewModel::class.java)
 
         // start observing liveData view model

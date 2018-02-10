@@ -1,7 +1,5 @@
 package com.ubudu.sample.model
 
-import android.arch.lifecycle.MutableLiveData
-
 import java.util.Timer
 import java.util.TimerTask
 
@@ -11,25 +9,30 @@ import java.util.TimerTask
 
 class Counter(counterMaxValue: Int) {
 
-    val liveData = MutableLiveData<Int>()
+    var listener: CounterListener? = null
 
-    private var counterTimer = Timer()
+    private var counter = 0
     private var counterMaxValue = 0
+    private var counterTimer = Timer()
     private var counterTimerTask: TimerTask? = null
 
     init {
         this.counterMaxValue = counterMaxValue
-        liveData.value = 0
     }
 
     /**
      *
      */
     fun start() {
+        // set initial value
+        setValue(0)
         // new timer task
         counterTimerTask = object : TimerTask() {
             override fun run() {
-                liveData.postValue(liveData.value!! + 1)
+                if (counter < counterMaxValue)
+                    setValue(++counter)
+                else
+                    setValue(0)
             }
         }
         // new Timer
@@ -43,6 +46,18 @@ class Counter(counterMaxValue: Int) {
      */
     fun stop() {
         counterTimerTask?.cancel()
-        liveData.value = 0
+        setValue(0)
+    }
+
+    /**
+     *
+     */
+    private fun setValue(newValue: Int) {
+        counter = newValue
+        listener?.onValueChanged(counter)
+    }
+
+    interface CounterListener {
+        fun onValueChanged(value: Int)
     }
 }
